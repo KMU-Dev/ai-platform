@@ -1,0 +1,118 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider      = "prisma-client-js"
+    binaryTargets = ["native"]
+}
+
+model User {
+    id              String      @id @default(uuid())
+    username        String      @unique
+    password        String
+    email           String      @unique
+    name            String
+    groups          Group[]
+    organizations   Organization[]
+    instances       Instance[]
+    quota           Quota       @relation(fields: [quotaId], references: [id])
+    quotaId         String
+    createdAt       DateTime    @default(now())
+}
+
+model Organization {
+    id          String      @id @default(uuid())
+    name        String      @unique
+    members     User[]
+    instances   Instance[]
+    quota       Quota       @relation(fields: [quotaId], references: [id])
+    quotaId     String
+    createdAt   DateTime    @default(now())
+}
+
+model Instance {
+    id          String          @id @default(uuid())
+    name        String          @unique
+    image       String
+
+    // manager owners
+    userOwner   User?           @relation(fields: [userId], references: [id])
+    userId      String?
+    orgOwner    Organization?   @relation(fields: [orgId], references: [id])
+    orgId       String?
+
+    logs        LogLine[]
+    createdAt   DateTime        @default(now())
+}
+
+model Group {
+    id          String      @id @default(uuid())
+    name        String      @unique
+    members     User[]
+    permissions Permission[]
+    createdAt   DateTime    @default(now())
+}
+
+// OAuth 2 Client
+model Client {
+    clientId        String          @id @default(uuid())
+    clientSecret    String
+    clientName      String          @unique
+    clientUri       String
+    audience        String[]
+    grantTypes      OAuthGrantType[]
+    redirectUris    String[]
+    scope           String
+    owner           User?           @relation(fields: [ownerId], references: [id])
+    ownerId         String?
+    org             Organization?   @relation(fields: [orgId], references: [id])
+    orgId           String?
+    createdAt       DateTime        @default(now())
+    updatedAt       DateTime        @updatedAt
+}
+
+model Quota {
+    id          String   @id @default(uuid())
+    cpu         Float
+    memory      Int
+    gpu         Int
+}
+
+model LogLine {
+    id          String      @id @default(uuid())
+    instance    Instance    @relation(fields: [instanceId], references: [id])
+    instanceId  String
+    lineNumber  Int
+    content     String
+    createdAt   DateTime    @default(now())
+}
+
+enum Permission {
+    // System related permissions
+    // Quota related permissions
+    QUOTA_DELEGATE
+    QUOTA_ALLOCATE
+
+
+    // User related permisions
+    // All write permissions don't include quota delegatation permission
+    USER_READ
+    USER_CREATE
+    USER_UPDATE
+    USER_DELETE
+
+    // Group related permissions
+    // All write permissions don't include quota delegatation permission
+    GROUP_READ
+    GROUP_WRITE
+    GROUP_DELETE
+}
+
+enum OAuthGrantType {
+    AUTHORIZATION_CODE_GRANT
+    IMPLICIT_GRANT
+    CLIENT_CREDENTIALS_GRANT
+    RESOURCE_OWNER_PASSWORD_CREDENTIALS_GRANT
+}

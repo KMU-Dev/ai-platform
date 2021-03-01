@@ -86,3 +86,9 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+# Compiled TypesScript files
+dist/
+
+# Application config folder
+config/
