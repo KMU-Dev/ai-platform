@@ -1,6 +1,14 @@
 import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
+    extend type Query {
+        users: [User!]!
+    }
+
+    extend type Mutation {
+        user(user: UserInput): User!
+    }
+
     type User implements Manager {
         id: ID!
         username: String!
@@ -13,11 +21,10 @@ export const typeDefs = gql`
         createdAt: Date!
     }
 
-    extend type Query {
-        users: [User!]!
-    }
-
-    extend type Mutation {
-        user(user: UserInput): User!
+    input UserInput {
+        username: String!
+        password: String!
+        name: String!
+        email: String!
     }
 `;

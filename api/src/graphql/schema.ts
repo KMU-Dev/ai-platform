@@ -82,12 +82,4 @@ export const typeDefs = gql`
         GROUP_WRITE
         GROUP_DELETE
     }
-
-    
-    input UserInput {
-        username: String!
-        password: String!
-        name: String!
-        email: String!
-    }
 `;

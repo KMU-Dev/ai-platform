@@ -6,15 +6,16 @@ import { resolvers } from "./resolvers";
 import { applyMiddleware } from "graphql-middleware";
 import { JWTService } from "../service/token";
 import { prisma } from "../utils/prisma";
-import { userResolvers, userTypeDef, userValidations } from "../user";
+import { userResolvers, userTypeDef } from "../user";
 import { merge } from "lodash";
+import { validations } from "./shield";
 
 const rawSchema = makeExecutableSchema({
     typeDefs: [typeDefs, userTypeDef],
     resolvers: merge(resolvers, userResolvers),
 });
 
-const schema = applyMiddleware(rawSchema, userValidations);
+const schema = applyMiddleware(rawSchema, validations);
 
 const jwtService = JWTService.getInstance();
 
