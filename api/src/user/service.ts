@@ -1,7 +1,6 @@
 import { User } from "@prisma/client";
 import { BCryptService } from "../service/crypt";
 import { prisma } from "../utils/prisma";
-import { permissions } from "./authorization";
 import { UserInput } from "./types";
 
 export class UserService {

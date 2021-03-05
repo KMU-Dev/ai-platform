@@ -14,10 +14,10 @@ export const typeDefs = gql`
         username: String!
         name: String!
         email: String!
-        groups: [Group!]!
+        group: Group!
         organizations: [Organization!]!
         instances: [Instance!]!
-        quota: Quota
+        quota: Quota!
         createdAt: Date!
     }
 
