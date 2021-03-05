@@ -8,6 +8,6 @@ export const resolvers = {
     Mutation: {
         user(_parent: unknown, args: { user: UserInput }): Promise<User> {
             return userService.createUser(args.user);
-        },
+        }
     }
 };

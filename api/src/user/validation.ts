@@ -23,12 +23,15 @@ const isUserValid = inputRule()(yup =>
         user: yup.object({
             username: yup.string()
                     .required(messages.required("username"))
+                    .min(4, messages.min("username"))
                     .max(16, messages.max("username")),
             password: yup.string()
                     .required(messages.required("password"))
+                    .min(8, messages.min("password"))
                     .max(64, messages.max("password")),
             name: yup.string()
                     .required(messages.required("name"))
+                    .min(2, messages.min("name"))
                     .max(64, messages.max("name")),
             email: yup.string()
                     .required(messages.required("email"))

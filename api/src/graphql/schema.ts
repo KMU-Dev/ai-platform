@@ -10,10 +10,7 @@ export const typeDefs = gql`
 
     type Query
 
-    type Mutation {
-        # auth
-        login(username: String!, password: String!): AuthPayload!
-    }
+    type Mutation
 
     type Organization implements Manager {
         id: ID!
@@ -41,45 +38,9 @@ export const typeDefs = gql`
         time: Date!
     }
 
-    # This group is for permission
-    type Group {
-        id: ID!
-        name: String!
-        members: [User!]!
-        permissions: [Permission!]!
-        createdAt: Date!
-    }
-
     type Quota {
         cpu: Float!
         memory: Int!
         gpu: Int!
-    }
-
-    type AuthPayload {
-        access_token: String!
-        expires_in: Int!
-        token_type: String!
-    }
-
-    enum Permission {
-        # System related permissions
-        # Quota related permissions
-        QUOTA_DELEGATE
-        QUOTA_ALLOCATE
-
-
-        # User related permisions
-        # All write permissions don't include quota delegatation permission
-        USER_READ
-        USER_CREATE
-        USER_UPDATE
-        USER_DELETE
-
-        # Group related permissions
-        # All write permissions don't include quota delegatation permission
-        GROUP_READ
-        GROUP_WRITE
-        GROUP_DELETE
     }
 `;

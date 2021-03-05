@@ -14,13 +14,14 @@ model User {
   password      String
   email         String         @unique
   name          String
-  groups        Group[]
+  group         Group          @relation(fields: [groupId], references: [id])
+  groupId       String
   organizations Organization[]
   instances     Instance[]
   quota         Quota          @relation(fields: [quotaId], references: [id])
   quotaId       String
+  clients       Client[]
   createdAt     DateTime       @default(now())
-  client        Client[]
 }
 
 model Organization {
@@ -30,8 +31,8 @@ model Organization {
   instances Instance[]
   quota     Quota      @relation(fields: [quotaId], references: [id])
   quotaId   String
+  clients   Client[]
   createdAt DateTime   @default(now())
-  client    Client[]
 }
 
 model Instance {
@@ -50,11 +51,12 @@ model Instance {
 }
 
 model Group {
-  id          String       @id @default(uuid())
-  name        String       @unique
+  id          String        @id @default(uuid())
+  name        String        @unique
   members     User[]
   permissions Permission[]
-  createdAt   DateTime     @default(now())
+  default     Boolean       @default(false)
+  createdAt   DateTime      @default(now())
 }
 
 // OAuth 2 Client
@@ -107,8 +109,17 @@ enum Permission {
   USER_UPDATE
   USER_DELETE
 
-  // Group related permissions
+  // Organization related permissions
   // All write permissions don't include quota delegatation permission
+  ORGANIZATION_READ
+  ORGANIZATION_WRITE
+  ORGANIZATION_DELETE
+
+  // Instance related permissions
+  INSTANCE_READ
+  INSTANCE_DELETE
+
+  // permission group related permissions
   GROUP_READ
   GROUP_WRITE
   GROUP_DELETE

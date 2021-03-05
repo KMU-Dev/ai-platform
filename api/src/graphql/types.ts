@@ -1,5 +1,8 @@
-export interface AuthPayload {
-    access_token: string
-    expires_in: number
-    token_type: string
+import { Prisma } from "@prisma/client";
+
+export type UserWithGroup = Prisma.UserGetPayload<{
+    include: { group: true }
+}>
+export interface Context {
+    user?: UserWithGroup;
 }

@@ -8,14 +8,16 @@ import { JWTService } from "../service/token";
 import { prisma } from "../utils/prisma";
 import { userResolvers, userTypeDef } from "../user";
 import { merge } from "lodash";
-import { validations } from "./shield";
+import { permissions, validations } from "./shield";
+import { authResolvers, authTypeDefs } from "../auth";
+import { UserWithGroup } from "./types";
 
 const rawSchema = makeExecutableSchema({
-    typeDefs: [typeDefs, userTypeDef],
-    resolvers: merge(resolvers, userResolvers),
+    typeDefs: [typeDefs, authTypeDefs, userTypeDef],
+    resolvers: merge(resolvers, authResolvers, userResolvers),
 });
 
-const schema = applyMiddleware(rawSchema, validations);
+const schema = applyMiddleware(rawSchema, permissions, validations);
 
 const jwtService = JWTService.getInstance();
 
@@ -30,7 +32,7 @@ export const apolloServer = new ApolloServer({
         const decodedToken = jwtService.decode(token);
         const userId = decodedToken.sub as string;
 
-        const user = await prisma.user.findUnique({ where: { id: userId }});
+        const user = await prisma.user.findUnique({ where: { id: userId }, include: { group: true }});
 
         return ({ user });
     },
