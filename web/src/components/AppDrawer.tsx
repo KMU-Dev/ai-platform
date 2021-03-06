@@ -1,10 +1,11 @@
-import { Avatar, Box, Button, Collapse, createStyles, Divider, Drawer, Link, List, ListItem, ListSubheader, makeStyles, Theme, Toolbar, Typography } from "@material-ui/core";
+import { Avatar, Box, Button, Collapse, createStyles, Divider, Drawer, Link, List, ListItem, ListSubheader, makeStyles, SvgIcon, Theme, Toolbar, Typography } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
-import { BarChart, ExpandLess, ExpandMore, PeopleAlt, Person } from "@material-ui/icons";
+import { ExpandLess, ExpandMore, Group, Person, Settings } from "@material-ui/icons";
 import { Link as RouterLink } from "react-router-dom";
 import { matchPath, useLocation } from "react-router";
 import clsx from "clsx";
 import { useState } from "react";
+import { ReactComponent as CloudGpu } from "../assets/cloud-gpu.svg";
 
 const drawerWidth = 256;
 
@@ -40,7 +41,6 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: theme.spacing(2),
         },
         subheader: {
-            // color: grey[700],
             fontWeight: 600,
             fontSize: "0.94rem",
         },
@@ -82,8 +82,15 @@ export default function AppDrawer() {
         { 
             subheader: "Overview",
             items: [
-                { type: "item", message: "Dashboard", href: "/admin", path: "/admin", icon: <BarChart className={classes.listItemButtonIcon} /> },
-                { type: "item", message: "Users", href: "/admin/users", path: "/admin/users", icon: <PeopleAlt className={classes.listItemButtonIcon} /> },
+                { type: "item", message: "Instance", href: "/", path: "/", icon: <SvgIcon component={CloudGpu} viewBox="0 0 24 24" className={classes.listItemButtonIcon} /> },
+                { type: "item", message: "Organizations", href: "/organizations", path: "/organizations", icon: <Group className={classes.listItemButtonIcon} /> },
+            ]
+        },
+        {
+            subheader: "Management",
+            items: [
+                { type: "item", message: "System Settings", href: "/admin/settings", path: "/admin/settings", icon: <Settings className={classes.listItemButtonIcon} /> },
+                { type: "item", message: "Users", href: "/admin/users", path: "/admin/users", icon: <Person className={classes.listItemButtonIcon} /> }
             ]
         }
     ];
@@ -136,23 +143,21 @@ export default function AppDrawer() {
     )
 
     const menu = menuSpecs.map((menuListSpec) => (
-        <Box className={classes.menuRoot}>
-            <List
-                subheader={
-                    <ListSubheader
-                        component="div"
-                        disableGutters
-                        className={classes.subheader}
-                    >
-                        {menuListSpec.subheader}
-                    </ListSubheader>
-                }
-            >
-                <List disablePadding>
-                    {getListItems(menuListSpec.items)}
-                </List>
+        <List
+            subheader={
+                <ListSubheader
+                    component="div"
+                    disableGutters
+                    className={classes.subheader}
+                >
+                    {menuListSpec.subheader}
+                </ListSubheader>
+            }
+        >
+            <List disablePadding>
+                {getListItems(menuListSpec.items)}
             </List>
-        </Box>
+        </List>
     ));
 
     return (
@@ -180,7 +185,9 @@ export default function AppDrawer() {
                 </Typography>
             </div>
             <Divider />
-            {menu}
+            <Box className={classes.menuRoot}>
+                {menu}
+            </Box>
         </Drawer>
     );
 }
