@@ -2,10 +2,11 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import Routes from './containers/Routes';
 import { BrowserRouter } from 'react-router-dom';
 
-function Root() {
+export default function Root() {
     const client = new ApolloClient({
-        uri: "/grqphql",
+        uri: "/graphql",
         cache: new InMemoryCache(),
+        connectToDevTools: true,
     });
 
     return (
@@ -16,5 +17,3 @@ function Root() {
         </ApolloProvider>
     );
 }
-
-export default Root;

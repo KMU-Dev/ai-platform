@@ -7,7 +7,7 @@ import { InitService } from "./service/init";
 const app = express();
 const port = 8080;
 
-apolloServer.applyMiddleware({ app, path: "/qraphql" });
+apolloServer.applyMiddleware({ app, path: "/graphql" });
 
 // configure midleware
 app.use(helmet());
