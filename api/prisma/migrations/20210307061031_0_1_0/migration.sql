@@ -103,7 +103,13 @@ CREATE UNIQUE INDEX "User.username_unique" ON "User"("username");
 CREATE UNIQUE INDEX "User.email_unique" ON "User"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "User_quotaId_unique" ON "User"("quotaId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Organization.name_unique" ON "Organization"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Organization_quotaId_unique" ON "Organization"("quotaId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Instance.name_unique" ON "Instance"("name");

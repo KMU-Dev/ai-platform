@@ -82,8 +82,8 @@ model Quota {
   cpu          Float
   memory       Int
   gpu          Int
-  user         User[]
-  organization Organization[]
+  user         User?
+  organization Organization?
 }
 
 model LogLine {

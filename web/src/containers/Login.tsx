@@ -12,7 +12,7 @@ import localforage from "localforage";
 import { Alert } from "@material-ui/lab";
 import { SavedAccessToken } from "../models/auth";
 
-const LOGIN = loader("../graphql/login.gql");
+const LOGIN = loader("../graphql/mutation/login.gql");
 
 interface FormData {
     username: string

@@ -1,0 +1,14 @@
+mutation User($user: UserInput!) {
+    user(user: $user) {
+        id
+        username
+        name
+        email
+        quota {
+            cpu
+            memory
+            gpu
+        }
+        createdAt
+    }
+}

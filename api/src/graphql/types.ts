@@ -1,8 +1,5 @@
-import { Prisma } from "@prisma/client";
+import { UserWithGroup } from "../user/types";
 
-export type UserWithGroup = Prisma.UserGetPayload<{
-    include: { group: true }
-}>
 export interface Context {
     user?: UserWithGroup;
 }

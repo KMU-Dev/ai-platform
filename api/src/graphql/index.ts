@@ -10,7 +10,6 @@ import { userResolvers, userTypeDef } from "../user";
 import { merge } from "lodash";
 import { permissions, validations } from "./shield";
 import { authResolvers, authTypeDefs } from "../auth";
-import { UserWithGroup } from "./types";
 
 const rawSchema = makeExecutableSchema({
     typeDefs: [typeDefs, authTypeDefs, userTypeDef],

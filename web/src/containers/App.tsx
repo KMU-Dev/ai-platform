@@ -9,9 +9,8 @@ import { SavedAccessToken } from '../models/auth';
 import TopAppBar from "../components/TopAppBar";
 import AppDrawer from "../components/AppDrawer";
 import routes from "../constants/routes.json";
-import Login from "./Login";
 
-const layoutExcludePaths = [routes.LOGIN];
+const layoutExcludePaths = [routes.LOGIN, routes.REGISTER];
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -40,6 +39,9 @@ export default function App(props: Props) {
         const getAccessToken = async () => {
             const token = await localforage.getItem<SavedAccessToken>(localforageKeys.ACCESS_TOKEN);
             if (!(token && token.expires_at > Date.now())) {
+                // delete outdated access token
+                await localforage.removeItem(localforageKeys.ACCESS_TOKEN);
+
                 // redirect user to login page
                 history.push("login", { next: history.location.pathname });
             }
@@ -68,22 +70,16 @@ export default function App(props: Props) {
 
     return (
         <div className={classes.root}>
-            <Route path={routes.LOGIN} exact component={Login} />
-            <Route render={({location}) => shouldShowLayout(location) ? <AppLayout>{props.children}</AppLayout> : ""} />
+            <Route render={({location}) => shouldShowLayout(location) ?
+                <>
+                    <TopAppBar/>
+                    <div className={classes.main}>
+                        <AppDrawer />
+                        {props.children}
+                    </div>
+                </> :
+                props.children
+            } />
         </div>
     );
-}
-
-function AppLayout(props: Props) {
-    const classes = useStyles();
-
-    return (
-        <>
-            <TopAppBar/>
-            <div className={classes.main}>
-                <AppDrawer />
-                {props.children}
-            </div>
-        </>
-    )
 }
