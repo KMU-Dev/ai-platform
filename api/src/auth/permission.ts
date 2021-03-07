@@ -1,6 +1,6 @@
 import { Permission } from "@prisma/client";
 import { IRules, rule } from "graphql-shield";
-import { hasPermission } from "../graphql/shield";
+import { hasPermission } from "./utils";
 import { Context } from "../graphql/types";
 import { GroupMutaionArgs } from "./types";
 
